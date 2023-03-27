@@ -53,7 +53,6 @@ class AddFragment : Fragment() {
 
     private fun inputCheck(firstName: String, lastName: String, age: Editable): Boolean {
         return firstName.isNotEmpty() && lastName.isNotEmpty() && age.isNotEmpty()
-
     }
 
 }
