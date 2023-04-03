@@ -1,10 +1,10 @@
 package com.example.roomviewmodel003.fragments.list
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -37,11 +37,39 @@ class ListFragment : Fragment() {
             adapter.setData(listuser)
         })
 
-
         bind.floatingActionButton.setOnClickListener {
             findNavController().navigate(R.id.action_listFragment_to_addFragment)
         }
 
+        // Добавим меню
+        setHasOptionsMenu(true)
+
         return bind.root  //inflater.inflate(R.layout.fragment_list, container, false)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.delete_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_delete) {
+            deleteAllUser()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun deleteAllUser() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton("Да") { _, _ ->
+            //
+            mUserViewModel.deleteAllUser()
+            Toast.makeText(requireContext(), "Все записи успешно удалены.", Toast.LENGTH_SHORT).show()
+        }
+        builder.setNegativeButton("Нет") { _, _ ->}
+        builder.setTitle("Удалить все записи?")
+        builder.setMessage("Вы действительно хотите удалить все записи из базы данных?")
+        builder.create().show()
+    }
+
 }
